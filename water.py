@@ -27,7 +27,7 @@ while(1):
 	x = str(today) + ',' + str(now) + ',' + str(buffer) + '\n'
 	flowrate 	= buffer.split(',')[1]
 	liquidflowing 	= buffer.split(',')[3]
-	totaloutput 	= buffer.split(',')[5].strip('\r')
+	totaloutput 	= buffer.split(',')[5]
 	if verbose:
 		print("Current Flow Rate (mL/min): ", flowrate)
 		print("Current Liquid Flowing (mL): ", liquidflowing)
