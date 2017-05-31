@@ -35,6 +35,3 @@ while(1):
 			print("Current Flow Rate (mL/min): ", flowrate)
 			print("Current Liquid Flowing (mL): ", liquidflowing)
 			print("Total Liquid Output (mL): ", totaloutput)
-		
-	except:
-		print("ERROR")
