@@ -4,7 +4,10 @@ import datetime
 import sys
 import os.path
 import traceback
+import Adafruit_CharLCD as LCD
 
+lcd = LCD.Adafruit_CharLCDPlate()
+lcd.set_backlight(1)
 baud = 9600
 addr = '/dev/ttyACM0'
 verbose = False
@@ -54,5 +57,12 @@ while True:
 		outf.flush()  # make sure it actually gets written out
 	except Exception:
 		print("DATA LOG ERROR", today, now, buffer)
+		traceback.print_exc(file=sys.stdout)
+		print('-' * 60)
+	try:
+		lcd.clear()
+		lcd.message("FR: ", flowrate, " LF: ", liquidflowing, "\n", "Total: ", totaloutput)
+	except Exception:
+		print("LCD ERROR", today, now)
 		traceback.print_exc(file=sys.stdout)
 		print('-' * 60)
