@@ -20,9 +20,10 @@ for arg in sys.argv:
 
 while(1):
 	try:
-		pt = serial.Serial(addr,9600, timeout=300)
-		spb = io.TextIOWrapper(io.BufferedRWPair(pt,pt,1), errors='strict',line_buffering=True)
-		buffer = spb.readline()
+		now = time.strftime("%H:%M:%S")
+		today = datetime.date.today()
+		ser = serial.Serial(addr,9600)
+		buffer = ser.readline()
 		buffer = buffer.strip("\n")
 		x = str(today) + ',' + str(now) + ',' + str(buffer) + '\n'
 		if verbose:
