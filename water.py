@@ -28,7 +28,7 @@ while(1):
 	today = datetime.date.today()
 	buffer = ser.readline()
 	buffer = buffer.strip("\n")
-	x = str(today) + ',' + str(now) + ',' + str(buffer) + '\n'
+	x = str(today) + ',' + str(now) + ',' + str(buffer)
 	flowrate = buffer.split(',')[1]
 	liquidflowing = buffer.split(',')[3]
 	totaloutput = buffer.split(',')[5].strip('\r')
