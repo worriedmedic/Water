@@ -18,13 +18,14 @@ for arg in sys.argv:
 		print("-v VERBOSE")
 		sys.exit()
 
+ser = serial.Serial(addr,9600)
+ser.readline()
+ser.readline()
+ser.readline()
+
 while(1):
 	now = time.strftime("%H:%M:%S")
 	today = datetime.date.today()
-	ser = serial.Serial(addr,9600)
-	ser.readline()
-	ser.readline()
-	ser.readline()
 	buffer = ser.readline()
 	buffer = buffer.strip("\n")
 	x = str(today) + ',' + str(now) + ',' + str(buffer) + '\n'
