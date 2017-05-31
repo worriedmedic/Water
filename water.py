@@ -37,4 +37,4 @@ while(1):
 			print("Total Liquid Output (mL): ", totaloutput)
 		
 	except:
-		pass
+		print("ERROR")
