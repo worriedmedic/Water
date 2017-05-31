@@ -31,18 +31,10 @@ while(1):
 	flowrate = buffer.split(',')[1]
 	liquidflowing = buffer.split(',')[3]
 	totaloutput = buffer.split(',')[5].strip('\r')
-	if verbose:
-		print("Current Flow Rate (mL/min): ", flowrate)
-		print("Current Liquid Flowing (mL): ", liquidflowing)
-		print("Total Liquid Output (mL): ", totaloutput)
-	if not os.path.exists('data_log'):
-		os.makedirs('data_log')
-	fname = str(today) + '.log'
-	fdirectory = '/home/pi/Power_Monitoring/data_log/'
-	fmode = 'a'
-	if not os.path.exists(fdirectory):
-		os.makedirs(fdirectory)
-	outf = open(os.path.join(fdirectory, fname), fmode)
-	outf.write(x)
-	outf.flush()
+	print(x)
+	#if verbose:
+	#	print("Current Flow Rate (mL/min): ", flowrate)
+	#	print("Current Liquid Flowing (mL): ", liquidflowing)
+	#	print("Total Liquid Output (mL): ", totaloutput)
+
 
