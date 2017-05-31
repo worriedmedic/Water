@@ -1,20 +1,39 @@
-import RPi.GPIO as GPIO
+import serial, io
 import time
 import datetime
 import sys
+import os.path
+import traceback
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(4, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+baud 		= 9600
+addr 		= '/dev/ttyACM0'
+verbose 	= False
 
-counter = 0
+for arg in sys.argv:
+	if arg == "-v":
+		verbose = True
+	elif arg == "-h":
+		print("Serial Monitoring Script - LWH 05/31/2017")
+		print("For monitoring neutralizer output")
+		print("-v VERBOSE")
+		sys.exit()
 
-try:
-    while True:
-        GPIO.wait_for_edge(4, GPIO.RISING)
-        now = time.strftime("%H:%M:%S")
-        today = datetime.date.today()
-        counter = counter + 1
-        print(today, now, counter)
-        GPIO.wait_for_edge(4, GPIO.FALLING)
-except exception:
-    print("ERROR")
+while True:
+	try:
+		pt = serial.Serial(addr,9600, timeout=300)
+		spb = io.TextIOWrapper(io.BufferedRWPair(pt,pt,1), errors='strict',line_buffering=True)
+		buffer = spb.readline()
+		buffer = buffer.strip("\n")
+		x = str(today) + ',' + str(now) + ',' + str(buffer) + '\n'
+		if verbose:
+			print(x)
+		flowrate 		= buffer.split(',')[1]
+		liquidflowing 	= buffer.split(',')[3]
+		totaloutput 	= buffer.split(',')[5]
+		if verbose:
+			print("Current Flow Rate (mL/min): ", flowrate)
+			print("Current Liquid Flowing (mL): ", liquidflowing)
+			print("Total Liquid Output (mL): ", totaloutput)
+		
+	except:
+		pass
