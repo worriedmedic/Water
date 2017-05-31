@@ -18,7 +18,7 @@ for arg in sys.argv:
 		print("-v VERBOSE")
 		sys.exit()
 
-while True:
+while(1):
 	try:
 		pt = serial.Serial(addr,9600, timeout=300)
 		spb = io.TextIOWrapper(io.BufferedRWPair(pt,pt,1), errors='strict',line_buffering=True)
