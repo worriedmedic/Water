@@ -61,6 +61,7 @@ while True:
 		print('-' * 60)
 	try:
 		message = "FR: " + flowrate + " LF: " + liquidflowing + "\n" +"Total(mL): " + totaloutput
+		lcd.clear()
 		lcd.message(message)
 	except Exception:
 		print("LCD ERROR", today, now)
