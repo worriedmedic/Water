@@ -5,9 +5,9 @@ import sys
 import os.path
 import traceback
 
-baud 		= 9600
-addr 		= '/dev/ttyACM0'
-verbose 	= False
+baud = 9600
+addr = '/dev/ttyACM0'
+verbose = False
 
 for arg in sys.argv:
 	if arg == "-v":
@@ -25,9 +25,9 @@ while(1):
 	buffer = ser.readline()
 	buffer = buffer.strip("\n")
 	x = str(today) + ',' + str(now) + ',' + str(buffer) + '\n'
-	flowrate 	= buffer.split(',')[1]
-	liquidflowing 	= buffer.split(',')[3]
-	totaloutput 	= buffer.split(',')[5]
+	flowrate = buffer.split(',')[1]
+	liquidflowing = buffer.split(',')[3]
+	totaloutput = buffer.split(',')[5].strip('\r')
 	if verbose:
 		print("Current Flow Rate (mL/min): ", flowrate)
 		print("Current Liquid Flowing (mL): ", liquidflowing)
