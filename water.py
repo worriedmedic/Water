@@ -38,7 +38,7 @@ while(1):
 	if not os.path.exists('data_log'):
 		os.makedirs('data_log')
 	fname = str(today) + '.log'
-	fdirectory = '/home/pi/Power_Monitoring/data_log/' + time.strftime("%Y-%m")
+	fdirectory = '/home/pi/Power_Monitoring/data_log/'
 	fmode = 'a'
 	if not os.path.exists(fdirectory):
 		os.makedirs(fdirectory)
