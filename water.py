@@ -12,6 +12,7 @@ baud = 9600
 addr = '/dev/ttyACM0'
 verbose = False
 totaloutput = 0
+oldoutput = 0
 
 for arg in sys.argv:
 	if arg == "-v":
