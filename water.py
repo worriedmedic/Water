@@ -12,7 +12,6 @@ baud = 9600
 addr = '/dev/ttyACM0'
 verbose = False
 totaloutput = 0
-oldoutput = 0
 
 for arg in sys.argv:
 	if arg == "-v":
@@ -32,12 +31,11 @@ while True:
 	now = time.strftime("%H:%M:%S")
 	today = datetime.date.today()
 	try:
+		oldoutput = totaloutput
 		buffer = ser.readline()
 		buffer = buffer.strip("\n")
 		flowrate = buffer.split(',')[1]
 		liquidflowing = buffer.split(',')[3]
-		if totaloutput:
-			oldoutput = totaloutput
 		totaloutput = buffer.split(',')[5].strip('\r')
 		if verbose:
 			print("Current Flow Rate (mL/min): ", flowrate)
