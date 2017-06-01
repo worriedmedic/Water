@@ -60,7 +60,7 @@ while True:
 		traceback.print_exc(file=sys.stdout)
 		print('-' * 60)
 	try:
-		message = "FR: " + flowrate + " LF: " + liquidflowing + "\n" +"Total(mL): " + totaloutput
+		message = "FR: " + flowrate + " LF: " + liquidflowing + "\n" +"Total: " + totaloutput
 		lcd.clear()
 		lcd.message(message)
 	except Exception:
