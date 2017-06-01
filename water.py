@@ -34,6 +34,8 @@ while True:
 		buffer = buffer.strip("\n")
 		flowrate = buffer.split(',')[1]
 		liquidflowing = buffer.split(',')[3]
+		if totaloutput:
+			totaloutput = oldoutput
 		totaloutput = buffer.split(',')[5].strip('\r')
 		if verbose:
 			print("Current Flow Rate (mL/min): ", flowrate)
@@ -44,7 +46,7 @@ while True:
 		print("DATA ERROR", today, now, buffer)
 		traceback.print_exc(file=sys.stdout)
 		print('-' * 60)
-	if liquidflowing is not '0':
+	if totaloutput is not oldoutput:
 		try:
 			if not os.path.exists('data_log'):
 				os.makedirs('data_log')
