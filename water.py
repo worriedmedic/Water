@@ -44,7 +44,7 @@ while True:
 		print("DATA ERROR", today, now, buffer)
 		traceback.print_exc(file=sys.stdout)
 		print('-' * 60)
-	if liquidflowing is not '0':
+	if liquidflowing is not 0:
 		try:
 			if not os.path.exists('data_log'):
 				os.makedirs('data_log')
