@@ -36,7 +36,7 @@ while True:
 		flowrate = buffer.split(',')[1]
 		liquidflowing = buffer.split(',')[3]
 		if totaloutput:
-			totaloutput = oldoutput
+			oldoutput = totaloutput
 		totaloutput = buffer.split(',')[5].strip('\r')
 		if verbose:
 			print("Current Flow Rate (mL/min): ", flowrate)
