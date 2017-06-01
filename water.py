@@ -11,6 +11,7 @@ lcd.set_backlight(1)
 baud = 9600
 addr = '/dev/ttyACM0'
 verbose = False
+totaloutput = 0
 
 for arg in sys.argv:
 	if arg == "-v":
