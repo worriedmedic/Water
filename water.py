@@ -44,26 +44,27 @@ while True:
 		print("DATA ERROR", today, now, buffer)
 		traceback.print_exc(file=sys.stdout)
 		print('-' * 60)
-	try:
-		if not os.path.exists('data_log'):
-			os.makedirs('data_log')
-		fname = str(today) + '.log'  # log file to save data in
-		fdirectory = './data_log/' + time.strftime("%Y-%m")
-		fmode = 'a'  # log file mode = append
-		if not os.path.exists(fdirectory):
-			os.makedirs(fdirectory)
-		outf = open(os.path.join(fdirectory, fname), fmode)
-		outf.write(x)  # write line of text to file
-		outf.flush()  # make sure it actually gets written out
-	except Exception:
-		print("DATA LOG ERROR", today, now, buffer)
-		traceback.print_exc(file=sys.stdout)
-		print('-' * 60)
-	try:
-		message = "FR: " + flowrate + " LF: " + liquidflowing + "\n" +"Total: " + totaloutput
-		lcd.clear()
-		lcd.message(message)
-	except Exception:
-		print("LCD ERROR", today, now)
-		traceback.print_exc(file=sys.stdout)
-		print('-' * 60)
+	if flowrate is not '0.0':
+		try:
+			if not os.path.exists('data_log'):
+				os.makedirs('data_log')
+			fname = str(today) + '.log'  # log file to save data in
+			fdirectory = './data_log/' + time.strftime("%Y-%m")
+			fmode = 'a'  # log file mode = append
+			if not os.path.exists(fdirectory):
+				os.makedirs(fdirectory)
+			outf = open(os.path.join(fdirectory, fname), fmode)
+			outf.write(x)  # write line of text to file
+			outf.flush()  # make sure it actually gets written out
+		except Exception:
+			print("DATA LOG ERROR", today, now, buffer)
+			traceback.print_exc(file=sys.stdout)
+			print('-' * 60)
+		try:
+			message = "FR: " + flowrate + " LF: " + liquidflowing + "\n" +"Total: " + totaloutput
+			lcd.clear()
+			lcd.message(message)
+		except Exception:
+			print("LCD ERROR", today, now)
+			traceback.print_exc(file=sys.stdout)
+			print('-' * 60)
