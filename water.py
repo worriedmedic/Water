@@ -40,7 +40,7 @@ while True:
 		if verbose:
 			print("Current Flow Rate (mL/min): ", flowrate)
 			print("Current Liquid Flowing (mL): ", liquidflowing)
-			print("Total Liquid Output (mL): ", totaloutput)
+			print("Total Liquid Output (mL): ", totaloutput, oldoutput)
 		x = str(now) + ',' + flowrate + ',' + liquidflowing + ',' + totaloutput + '\n'
 	except Exception:
 		print("DATA ERROR", today, now, buffer)
