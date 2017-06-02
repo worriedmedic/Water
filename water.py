@@ -11,7 +11,6 @@ lcd.set_backlight(1)
 baud = 9600
 addr = '/dev/ttyACM0'
 verbose = False
-totaloutput = 0
 
 for arg in sys.argv:
 	if arg == "-v":
@@ -31,7 +30,6 @@ while True:
 	now = time.strftime("%H:%M:%S")
 	today = datetime.date.today()
 	try:
-		oldoutput = totaloutput
 		buffer = ser.readline()
 		buffer = buffer.strip("\n")
 		flowrate = buffer.split(',')[1]
@@ -40,13 +38,13 @@ while True:
 		if verbose:
 			print("Current Flow Rate (mL/min): ", flowrate)
 			print("Current Liquid Flowing (mL): ", liquidflowing)
-			print("Total Liquid Output (mL): ", totaloutput, oldoutput)
+			print("Total Liquid Output (mL): ", totaloutput)
 		x = str(now) + ',' + flowrate + ',' + liquidflowing + ',' + totaloutput + '\n'
 	except Exception:
 		print("DATA ERROR", today, now, buffer)
 		traceback.print_exc(file=sys.stdout)
 		print('-' * 60)
-	if totaloutput is not oldoutput:
+	if liquidflowing is not '0':
 		try:
 			if not os.path.exists('data_log'):
 				os.makedirs('data_log')
