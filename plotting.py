@@ -13,6 +13,7 @@ import subprocess
 td = '7D'
 line_width = 2
 label_offset = 3
+difference = False
 
 
 if True:
@@ -21,6 +22,7 @@ if True:
 	data = data.drop(['Date', 'Time'], 1)
 	data = data.set_index('Datetime')
 	data = data.convert_objects(convert_numeric=True)
+	data['Difference'] = data['Total Volume'].diff(1)
 	fig = plt.figure(figsize=(10, 8), dpi=100)
 	myFmt = mdates.DateFormatter('%m-%d %H:%M')
 	plt.style.use('bmh')
@@ -39,3 +41,22 @@ if True:
 	fig.savefig('/home/pi/data_log/water_plot.png', bbox_inches='tight')
 	subprocess.call(["sudo", "chmod", "+x", "/home/pi/data_log/water_plot.png"])
 	subprocess.call(["sudo", "cp", "/home/pi/data_log/water_plot.png", "/var/www/html/"])
+	if difference:
+		fig = plt.figure(figsize=(10, 8), dpi=100)
+		myFmt = mdates.DateFormatter('%m-%d %H:%M')
+		plt.style.use('bmh')
+		plt.rcParams['axes.facecolor']='w'
+		plt.plot_date(data.last(td).index, data['Difference'].last(td).values, linestyle="solid", linewidth=line_width, marker='None', color=plt.rcParams['axes.color_cycle'][0], label='Total Volume Difference (mL)')
+		plt.text(data.index[-1:][0], data['Difference'][-1], data['Difference'][-1], fontsize=8, horizontalalignment='left', verticalalignment='top', rotation=45, backgroundcolor='w', color=plt.rcParams['axes.color_cycle'][0])
+		plt.legend(loc=2, ncol=2, fontsize=8).set_visible(True)
+		plt.title('Difference Neutralizer Water Flow: Past %s' %td)
+		plt.xlabel('Time')
+		plt.ylabel('Fluid (mL)')
+		plt.grid(True)
+		plt.tight_layout()
+		fig.axes[0].get_xaxis().set_major_formatter(myFmt)
+		fig.autofmt_xdate()
+		fig.text(0.5, 0.5, 'Dover Water Neutralizer', fontsize=25, color='gray', ha='center', va='center', alpha=0.35)
+		fig.savefig('/home/pi/data_log/diff_water_plot.png', bbox_inches='tight')
+		subprocess.call(["sudo", "chmod", "+x", "/home/pi/data_log/diff_water_plot.png"])
+		subprocess.call(["sudo", "cp", "/home/pi/data_log/diff_water_plot.png", "/var/www/html/"])
