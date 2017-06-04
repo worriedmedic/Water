@@ -21,8 +21,8 @@ def txt_output():
 			text_file.write("Date: %s, Time: %s\n" %(txt_now.strftime('%Y-%m-%d'), txt_now.strftime('%H:%M:%S')))
 			text_file.write("Flow Rate: %s, Liquid Flowing: %s\n" %(flowrate, liquidflowing))
 			text_file.write("Total Output: %s\n" %totaloutput)
-			subprocess.call(["sudo", "cp", "/home/pi/data_log/txt_output.txt", "/var/www/html/"])
-			subprocess.call(["sudo", "chmod", "+x", "/var/www/html/txt_output.txt"])
+			subprocess.call(["sudo", "cp", "/home/pi/data_log/txt_output.txt", "/var/www/html/"], shell=True)
+			subprocess.call(["sudo", "chmod", "+x", "/var/www/html/txt_output.txt"], shell=True)
 	except Exception:
 		print("TXT OUTPUT ERROR", today, now, buffer)
 		traceback.print_exc(file=sys.stdout)
