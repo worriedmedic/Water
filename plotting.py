@@ -10,7 +10,7 @@ import traceback
 import sys, os.path
 import subprocess
 
-td = '7D'
+td = '90D'
 line_width = 2
 label_offset = 3
 water_flowing = True
