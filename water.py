@@ -22,6 +22,10 @@ def txt_output():
 			text_file.write("Total Output: %s\n" %totaloutput)
 			subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"])
 			subprocess.call(["sudo", "chmod", "+x", "/var/www/html/txt_output.txt"])
+	except Exception:
+		print("TXT OUTPUT ERROR", today, now, buffer)
+		traceback.print_exc(file=sys.stdout)
+		print('-' * 60)
 
 for arg in sys.argv:
 	if arg == "-v":
