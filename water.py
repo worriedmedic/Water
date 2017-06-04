@@ -5,12 +5,23 @@ import sys
 import os.path
 import traceback
 import Adafruit_CharLCD as LCD
+import subprocess
 
 lcd = LCD.Adafruit_CharLCDPlate()
 lcd.set_backlight(1)
 baud = 9600
 addr = '/dev/ttyACM0'
 verbose = False
+
+def txt_output():
+	try:
+		with open("./data_log/txt_output.txt", "w") as text_file:
+			text_file.write("Dover Lane well water neutralizer monitor, all values in mL.\n")
+			text_file.write("Date: %s, Time: %s\n", %(now.strftime('%Y-%m-%d'), now.strftime('%Y-%m-%d')))
+			text_file.write("Flow Rate: %s, Liquid Flowing: %s\n", %(flowrate, liquidflowing))
+			text_file.write("Total Output: %s\n" %totaloutput)
+			subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"])
+			subprocess.call(["sudo", "chmod", "+x", "/var/www/html/txt_output.txt"])
 
 for arg in sys.argv:
 	if arg == "-v":
@@ -21,16 +32,12 @@ for arg in sys.argv:
 		print("-v VERBOSE")
 		sys.exit()
 
-series = pd.Series()
 ser = serial.Serial(addr,9600)
 ser.readline()
 ser.readline()
 ser.readline()
 
 while True:
-	t = pd.datetime.now()
-	now = time.strftime("%H:%M:%S")
-	today = datetime.date.today()
 	try:
 		buffer = ser.readline()
 		buffer = buffer.strip("\n")
@@ -47,12 +54,14 @@ while True:
 		traceback.print_exc(file=sys.stdout)
 		print('-' * 60)
 	if liquidflowing is not '0':
-		series[t] = flowrate, liquidflowing, totaloutput
+		now = time.strftime("%H:%M:%S")
+		today = datetime.date.today()
+		txt_output()
 		try:
 			if not os.path.exists('data_log'):
 				os.makedirs('data_log')
-			fname = str(today) + '.log'  # log file to save data in
-			fdirectory = './data_log/' + time.strftime("%Y-%m")
+			fname = 'neutralizer_flow.log'  # log file to save data in
+			fdirectory = './data_log/'
 			fmode = 'a'  # log file mode = append
 			if not os.path.exists(fdirectory):
 				os.makedirs(fdirectory)
