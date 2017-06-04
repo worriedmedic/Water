@@ -45,6 +45,8 @@ flowrate = buffer.split(',')[1]
 liquidflowing = buffer.split(',')[3]
 totaloutput = buffer.split(',')[5].strip('\r')
 txt_output()
+subprocess.call(["sudo", "chmod", "+x", "./data_log/txt_output.txt"])
+subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"])
 
 while True:
 	try:
