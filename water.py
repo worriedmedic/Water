@@ -12,6 +12,7 @@ lcd.set_backlight(1)
 baud = 9600
 addr = '/dev/ttyACM0'
 verbose = False
+previous_zero = False
 
 def txt_output():
 	try:
@@ -39,14 +40,14 @@ for arg in sys.argv:
 ser = serial.Serial(addr,9600)
 ser.readline()
 ser.readline()
-buffer = ser.readline()
-buffer = buffer.strip("\n")
-flowrate = buffer.split(',')[1]
-liquidflowing = buffer.split(',')[3]
-totaloutput = buffer.split(',')[5].strip('\r')
-txt_output()
-subprocess.call(["sudo", "chmod", "+x", "./data_log/txt_output.txt"])
-subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"])
+#buffer = ser.readline()
+#buffer = buffer.strip("\n")
+#flowrate = buffer.split(',')[1]
+#liquidflowing = buffer.split(',')[3]
+#totaloutput = buffer.split(',')[5].strip('\r')
+#txt_output()
+#subprocess.call(["sudo", "chmod", "+x", "./data_log/txt_output.txt"])
+#subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"])
 
 while True:
 	try:
@@ -66,7 +67,7 @@ while True:
 		print("DATA ERROR", today, now, buffer)
 		traceback.print_exc(file=sys.stdout)
 		print('-' * 60)
-	if liquidflowing is not '0':
+	if previous_zero is False or liquidflowing is not '0':
 		txt_output()
 		subprocess.call(["sudo", "chmod", "+x", "./data_log/txt_output.txt"])
 		subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"])
@@ -85,6 +86,10 @@ while True:
 			print("DATA LOG ERROR", today, now, buffer)
 			traceback.print_exc(file=sys.stdout)
 			print('-' * 60)
+		if liquidflowing is '0':
+			previous_zero = True
+		else:
+			previous_zero = False
 		try:
 			message = str(today) + "," + str(now) + "\n" +"Total: " + totaloutput
 			lcd.clear()
