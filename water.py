@@ -21,8 +21,7 @@ def txt_output():
 			text_file.write("Date: %s, Time: %s\n" %(txt_now.strftime('%Y-%m-%d'), txt_now.strftime('%H:%M:%S')))
 			text_file.write("Flow Rate: %s, Liquid Flowing: %s\n" %(flowrate, liquidflowing))
 			text_file.write("Total Output: %s\n" %totaloutput)
-			subprocess.call(["sudo", "chmod", "+x", "./data_log/txt_output.txt"], shell=True)
-			subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"], shell=True)
+			
 	except Exception:
 		print("TXT OUTPUT ERROR", today, now, buffer)
 		traceback.print_exc(file=sys.stdout)
@@ -67,6 +66,8 @@ while True:
 		print('-' * 60)
 	if liquidflowing is not '0':
 		txt_output()
+		subprocess.call(["sudo", "chmod", "+x", "./data_log/txt_output.txt"])
+		subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"])
 		try:
 			if not os.path.exists('data_log'):
 				os.makedirs('data_log')
