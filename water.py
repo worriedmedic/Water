@@ -16,8 +16,9 @@ verbose = False
 def txt_output():
 	try:
 		with open("./data_log/txt_output.txt", "w") as text_file:
+			txt_now = datetime.datetime.now()
 			text_file.write("Dover Lane well water neutralizer monitor, all values in mL.\n")
-			text_file.write("Date: %s, Time: %s\n" %(now.strftime('%Y-%m-%d'), now.strftime('%Y-%m-%d')))
+			text_file.write("Date: %s, Time: %s\n" %(txt_now.strftime('%Y-%m-%d'), txt_now.strftime('%Y-%m-%d')))
 			text_file.write("Flow Rate: %s, Liquid Flowing: %s\n" %(flowrate, liquidflowing))
 			text_file.write("Total Output: %s\n" %totaloutput)
 			subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"])
