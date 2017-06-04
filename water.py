@@ -18,7 +18,7 @@ def txt_output():
 		with open("./data_log/txt_output.txt", "w") as text_file:
 			txt_now = datetime.datetime.now()
 			text_file.write("Dover Lane well water neutralizer monitor, all values in mL.\n")
-			text_file.write("Date: %s, Time: %s\n" %(txt_now.strftime('%Y-%m-%d'), txt_now.strftime('%Y-%m-%d')))
+			text_file.write("Date: %s, Time: %s\n" %(txt_now.strftime('%Y-%m-%d'), txt_now.strftime('%H:%M:%S')))
 			text_file.write("Flow Rate: %s, Liquid Flowing: %s\n" %(flowrate, liquidflowing))
 			text_file.write("Total Output: %s\n" %totaloutput)
 			subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"])
@@ -40,7 +40,12 @@ for arg in sys.argv:
 ser = serial.Serial(addr,9600)
 ser.readline()
 ser.readline()
-ser.readline()
+buffer = ser.readline()
+buffer = buffer.strip("\n")
+flowrate = buffer.split(',')[1]
+liquidflowing = buffer.split(',')[3]
+totaloutput = buffer.split(',')[5].strip('\r')
+txt_output()
 
 while True:
 	try:
