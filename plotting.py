@@ -1,7 +1,10 @@
 import pandas as pd
 import numpy as np
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
 import time, datetime
 import traceback
 import sys, os.path
@@ -19,6 +22,7 @@ if True:
 	data = data.set_index('Datetime')
 	data = data.convert_objects(convert_numeric=True)
 	fig = plt.figure(figsize=(10, 8), dpi=100)
+	myFmt = mdates.DateFormatter('%m-%d %H:%M')
 	plt.style.use('bmh')
 	plt.rcParams['axes.facecolor']='w'
 	plt.plot_date(data.last(td).index, data['Total Volume'].last(td).values, linestyle="solid", linewidth=line_width, marker='None', color=plt.rcParams['axes.color_cycle'][0], label='Total Volume (mL)')
@@ -29,6 +33,7 @@ if True:
 	plt.ylabel('Fluid (mL)')
 	plt.grid(True)
 	plt.tight_layout()
+	fig.axes[0].get_xaxis().set_major_formatter(myFmt)
 	fig.autofmt_xdate()
 	fig.text(0.5, 0.5, 'Dover Water Neutralizer', fontsize=25, color='gray', ha='center', va='center', alpha=0.35)
 	fig.savefig('/home/pi/data_log/water_plot.png', bbox_inches='tight')
