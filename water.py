@@ -43,6 +43,8 @@ ser.readline()
 
 while True:
 	try:
+		now = time.strftime("%H:%M:%S")
+		today = datetime.date.today()
 		buffer = ser.readline()
 		buffer = buffer.strip("\n")
 		flowrate = buffer.split(',')[1]
@@ -58,8 +60,6 @@ while True:
 		traceback.print_exc(file=sys.stdout)
 		print('-' * 60)
 	if liquidflowing is not '0':
-		now = time.strftime("%H:%M:%S")
-		today = datetime.date.today()
 		txt_output()
 		try:
 			if not os.path.exists('data_log'):
