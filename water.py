@@ -21,12 +21,14 @@ for arg in sys.argv:
 		print("-v VERBOSE")
 		sys.exit()
 
+series = pd.Series()
 ser = serial.Serial(addr,9600)
 ser.readline()
 ser.readline()
 ser.readline()
 
 while True:
+	t = pd.datetime.now()
 	now = time.strftime("%H:%M:%S")
 	today = datetime.date.today()
 	try:
@@ -35,16 +37,17 @@ while True:
 		flowrate = buffer.split(',')[1]
 		liquidflowing = buffer.split(',')[3]
 		totaloutput = buffer.split(',')[5].strip('\r')
+		x = str(today) + ',' + str(now) + ',' + flowrate + ',' + liquidflowing + ',' + totaloutput + '\n'
 		if verbose:
 			print("Current Flow Rate (mL/min): ", flowrate)
 			print("Current Liquid Flowing (mL): ", liquidflowing)
 			print("Total Liquid Output (mL): ", totaloutput)
-		x = str(now) + ',' + flowrate + ',' + liquidflowing + ',' + totaloutput + '\n'
 	except Exception:
 		print("DATA ERROR", today, now, buffer)
 		traceback.print_exc(file=sys.stdout)
 		print('-' * 60)
 	if liquidflowing is not '0':
+		series[t] = flowrate, liquidflowing, totaloutput
 		try:
 			if not os.path.exists('data_log'):
 				os.makedirs('data_log')
@@ -61,7 +64,7 @@ while True:
 			traceback.print_exc(file=sys.stdout)
 			print('-' * 60)
 		try:
-			message = "FR: " + flowrate + " LF: " + liquidflowing + "\n" +"Total: " + totaloutput
+			message = str(today) + "," + str(now) + "\n" +"Total: " + totaloutput
 			lcd.clear()
 			lcd.message(message)
 		except Exception:
