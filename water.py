@@ -13,6 +13,8 @@ baud = 9600
 addr = '/dev/ttyACM0'
 verbose = False
 previous_zero = False
+pre_liquidflowing = None
+x = None
 
 def txt_output():
 	try:
@@ -51,6 +53,11 @@ ser.readline()
 
 while True:
 	try:
+		if x:
+			pre_x = x
+			pre_flowrate = flowrate
+			pre_liquidflowing = liquidflowing
+			pre_totaloutput = totaloutput
 		now = time.strftime("%H:%M:%S")
 		today = datetime.date.today()
 		buffer = ser.readline()
@@ -80,6 +87,8 @@ while True:
 			if not os.path.exists(fdirectory):
 				os.makedirs(fdirectory)
 			outf = open(os.path.join(fdirectory, fname), fmode)
+			if pre_liquidflowing is '0':
+				outf.write(pre_x)
 			outf.write(x)  # write line of text to file
 			outf.flush()  # make sure it actually gets written out
 		except Exception:
