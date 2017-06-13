@@ -4,6 +4,8 @@ import datetime
 import sys
 import os.path
 import traceback
+import pandas as pd
+import numpy as np
 import Adafruit_CharLCD as LCD
 import subprocess
 
@@ -23,7 +25,7 @@ def txt_output():
 			text_file.write("Dover Lane well water neutralizer monitor, all values in mL.\n")
 			text_file.write("Date: %s, Time: %s\n" %(txt_now.strftime('%Y-%m-%d'), txt_now.strftime('%H:%M:%S')))
 			text_file.write("Flow Rate: %s, Liquid Flowing: %s\n" %(flowrate, liquidflowing))
-			text_file.write("Total Output: %s\n" %totaloutput)
+			text_file.write("Total Output: %s | %s\n" %(totaloutput, sumtotal))
 			
 	except Exception:
 		print("TXT OUTPUT ERROR", today, now, buffer)
@@ -42,14 +44,13 @@ for arg in sys.argv:
 ser = serial.Serial(addr,9600)
 ser.readline()
 ser.readline()
-#buffer = ser.readline()
-#buffer = buffer.strip("\n")
-#flowrate = buffer.split(',')[1]
-#liquidflowing = buffer.split(',')[3]
-#totaloutput = buffer.split(',')[5].strip('\r')
-#txt_output()
-#subprocess.call(["sudo", "chmod", "+x", "./data_log/txt_output.txt"])
-#subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"])
+
+data = pd.read_csv('/home/pi/data_log/neutralizer_flow.log', names = ["Date", "Time", "Flow Rate", "Curent Volume", "Total Volume",], dtype=str)
+data['Datetime'] = pd.to_datetime(data['Date'] + ' ' + data['Time'])
+data = data.drop(['Date', 'Time'], 1)
+data = data.set_index('Datetime')
+data = data.convert_objects(convert_numeric=True)
+total = data['Curent Volume'].sum()
 
 while True:
 	try:
@@ -65,11 +66,12 @@ while True:
 		flowrate = buffer.split(',')[1]
 		liquidflowing = buffer.split(',')[3]
 		totaloutput = buffer.split(',')[5].strip('\r')
-		x = str(today) + ',' + str(now) + ',' + flowrate + ',' + liquidflowing + ',' + totaloutput + '\n'
+		sumtotal = float(total) + float(totaloutput)
+		x = str(today) + ',' + str(now) + ',' + flowrate + ',' + liquidflowing + ',' + totaloutput + str(sumtotal) + '\n'
 		if verbose:
 			print("Current Flow Rate (mL/min): ", flowrate)
 			print("Current Liquid Flowing (mL): ", liquidflowing)
-			print("Total Liquid Output (mL): ", totaloutput)
+			print("Total Liquid Output (mL): ", totaloutput, "|", sumtotal)
 	except Exception:
 		print("DATA ERROR", today, now, buffer)
 		traceback.print_exc(file=sys.stdout)
@@ -100,7 +102,7 @@ while True:
 		else:
 			previous_zero = False
 		try:
-			message = str(today) + "," + str(now) + "\n" +"Total: " + totaloutput
+			message = str(today) + "," + str(now) + "\n" +"T:" + totaloutput + "|" + str(sumtotal)
 			lcd.clear()
 			lcd.message(message)
 		except Exception:
