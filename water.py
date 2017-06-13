@@ -67,7 +67,7 @@ while True:
 		liquidflowing = buffer.split(',')[3]
 		totaloutput = buffer.split(',')[5].strip('\r')
 		sumtotal = float(total) + float(totaloutput)
-		x = str(today) + ',' + str(now) + ',' + flowrate + ',' + liquidflowing + ',' + totaloutput + str(sumtotal) + '\n'
+		x = str(today) + ',' + str(now) + ',' + flowrate + ',' + liquidflowing + ',' + totaloutput + ',' + str(sumtotal) + '\n'
 		if verbose:
 			print("Current Flow Rate (mL/min): ", flowrate)
 			print("Current Liquid Flowing (mL): ", liquidflowing)
