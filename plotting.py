@@ -18,12 +18,11 @@ water_flowing = True
 
 
 if True:
-	data = pd.read_csv('/home/pi/data_log/neutralizer_flow.log', names = ["Date", "Time", "Flow Rate", "Curent Volume", "Total Volume",], dtype=str)
+	data = pd.read_csv('/home/pi/data_log/neutralizer_flow.log', names = ["Date", "Time", "Flow Rate", "Curent Volume", "Total Volume", "Sum Total Volume"], dtype=str)
 	data['Datetime'] = pd.to_datetime(data['Date'] + ' ' + data['Time'])
 	data = data.drop(['Date', 'Time'], 1)
 	data = data.set_index('Datetime')
 	data = data.convert_objects(convert_numeric=True)
-	data['Difference'] = data['Total Volume'].diff(1)
 	total = data['Curent Volume'].sum()
 	fig = plt.figure(figsize=(10, 8), dpi=100)
 	myFmt = mdates.DateFormatter('%m-%d %H:%M')
