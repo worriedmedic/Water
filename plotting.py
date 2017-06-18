@@ -25,7 +25,7 @@ if True:
 	data = data.convert_objects(convert_numeric=True)
 	total = data['Curent Volume'].sum()
 	fig = plt.figure(figsize=(10, 8), dpi=100)
-	myFmt = mdates.DateFormatter('%m-%d %H:%M')
+	myFmt = mdates.DateFormatter('%m-%d')
 	plt.style.use('bmh')
 	plt.rcParams['axes.facecolor']='w'
 	plt.plot_date(data.last(td).index, data['Total Volume'].last(td).values, linestyle="solid", linewidth=line_width, marker='None', color=plt.rcParams['axes.color_cycle'][0], label='Total Volume (mL)')
