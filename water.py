@@ -45,12 +45,18 @@ ser = serial.Serial(addr,9600)
 ser.readline()
 ser.readline()
 
-data = pd.read_csv('/home/pi/data_log/neutralizer_flow.log', names = ["Date", "Time", "Flow Rate", "Curent Volume", "Total Volume",], dtype=str)
-data['Datetime'] = pd.to_datetime(data['Date'] + ' ' + data['Time'])
-data = data.drop(['Date', 'Time'], 1)
-data = data.set_index('Datetime')
-data = data.convert_objects(convert_numeric=True)
-total = data['Curent Volume'].sum()
+try:
+	data = pd.read_csv('/home/pi/data_log/neutralizer_flow.log', names = ["Date", "Time", "Flow Rate", "Curent Volume", "Total Volume",], dtype=str)
+	data['Datetime'] = pd.to_datetime(data['Date'] + ' ' + data['Time'])
+	data = data.drop(['Date', 'Time'], 1)
+	data = data.set_index('Datetime')
+	data = data.convert_objects(convert_numeric=True)
+	total = data['Curent Volume'].sum()
+except Exception:
+	total = 0
+	if verbose:
+		print("NO LOG DETECTED... Setting Volume to 0ml")
+
 
 while True:
 	try:
