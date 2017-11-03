@@ -58,7 +58,7 @@ except Exception:
 		print("NO LOG DETECTED... Setting Volume to 0ml")
 
 
-for buffer in ser(addr, 9600):
+for buffer in serial.Serial(addr, 9600):
 	try:
 		buffer = buffer.strip("\n")
 		now = time.strftime("%H:%M:%S")
