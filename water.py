@@ -41,9 +41,9 @@ for arg in sys.argv:
 		print("-v VERBOSE")
 		sys.exit()
 
-ser = serial.Serial(addr,9600)
-ser.readline()
-ser.readline()
+#ser = serial.Serial(addr,9600)
+#ser.readline()
+#ser.readline()
 
 try:
 	data = pd.read_csv('/home/pi/data_log/neutralizer_flow.log', names = ["Date", "Time", "Flow Rate", "Curent Volume", "Total Volume",], dtype=str)
@@ -58,17 +58,16 @@ except Exception:
 		print("NO LOG DETECTED... Setting Volume to 0ml")
 
 
-while True:
+for buffer in ser(addr, 9600):
 	try:
+		buffer = buffer.strip("\n")
+		now = time.strftime("%H:%M:%S")
+		today = datetime.date.today()
 		if x:
 			pre_x = x
 			pre_flowrate = flowrate
 			pre_liquidflowing = liquidflowing
 			pre_totaloutput = totaloutput
-		now = time.strftime("%H:%M:%S")
-		today = datetime.date.today()
-		buffer = ser.readline()
-		buffer = buffer.strip("\n")
 		flowrate = buffer.split(',')[1]
 		liquidflowing = buffer.split(',')[3]
 		totaloutput = buffer.split(',')[5].strip('\r')
