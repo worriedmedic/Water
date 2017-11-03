@@ -78,7 +78,7 @@ for buffer in serial.Serial(addr, 9600):
 			print("Current Liquid Flowing (mL): ", liquidflowing)
 			print("Total Liquid Output (mL): ", totaloutput, "|", sumtotal)
 	except Exception:
-		liquidflowing = 0
+		#liquidflowing = 0
 		print("DATA ERROR", today, now, buffer)
 		traceback.print_exc(file=sys.stdout)
 		print('-' * 60)
