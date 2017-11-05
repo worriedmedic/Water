@@ -82,36 +82,41 @@ for buffer in serial.Serial(addr, 9600):
 		print("DATA ERROR", today, now, buffer)
 		traceback.print_exc(file=sys.stdout)
 		print('-' * 60)
-	if previous_zero is False or liquidflowing is not '0':
-		txt_output()
-		subprocess.call(["sudo", "chmod", "+x", "./data_log/txt_output.txt"])
-		subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"])
-		try:
-			if not os.path.exists('data_log'):
-				os.makedirs('data_log')
-			fname = 'neutralizer_flow.log'  # log file to save data in
-			fdirectory = './data_log/'
-			fmode = 'a'  # log file mode = append
-			if not os.path.exists(fdirectory):
-				os.makedirs(fdirectory)
-			outf = open(os.path.join(fdirectory, fname), fmode)
-			if pre_liquidflowing is '0':
-				outf.write(pre_x)
-			outf.write(x)  # write line of text to file
-			outf.flush()  # make sure it actually gets written out
-		except Exception:
-			print("DATA LOG ERROR", today, now, buffer)
-			traceback.print_exc(file=sys.stdout)
-			print('-' * 60)
-		if liquidflowing is '0':
-			previous_zero = True
-		else:
-			previous_zero = False
-		try:
-			message = str(today) + "," + str(now) + "\n" +"T:" + totaloutput + "|" + str(sumtotal)
-			lcd.clear()
-			lcd.message(message)
-		except Exception:
-			print("LCD ERROR", today, now)
-			traceback.print_exc(file=sys.stdout)
-			print('-' * 60)
+	try:
+		if previous_zero is False or liquidflowing is not '0':
+			txt_output()
+			subprocess.call(["sudo", "chmod", "+x", "./data_log/txt_output.txt"])
+			subprocess.call(["sudo", "cp", "./data_log/txt_output.txt", "/var/www/html/"])
+			try:
+				if not os.path.exists('data_log'):
+					os.makedirs('data_log')
+				fname = 'neutralizer_flow.log'  # log file to save data in
+				fdirectory = './data_log/'
+				fmode = 'a'  # log file mode = append
+				if not os.path.exists(fdirectory):
+					os.makedirs(fdirectory)
+				outf = open(os.path.join(fdirectory, fname), fmode)
+				if pre_liquidflowing is '0':
+					outf.write(pre_x)
+				outf.write(x)  # write line of text to file
+				outf.flush()  # make sure it actually gets written out
+			except Exception:
+				print("DATA LOG ERROR", today, now, buffer)
+				traceback.print_exc(file=sys.stdout)
+				print('-' * 60)
+			if liquidflowing is '0':
+				previous_zero = True
+			else:
+				previous_zero = False
+			try:
+				message = str(today) + "," + str(now) + "\n" +"T:" + totaloutput + "|" + str(sumtotal)
+				lcd.clear()
+				lcd.message(message)
+			except Exception:
+				print("LCD ERROR", today, now)
+				traceback.print_exc(file=sys.stdout)
+				print('-' * 60)
+	except Exception:
+		print("GENERAL ERROR, likely liquidflowing not defined...")
+		traceback.print_exc(file=sys.stdout)
+		print('-' * 60)
